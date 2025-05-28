@@ -29,10 +29,11 @@ int main(int argc, char *argv[])
 {
     char *buf=(char *)malloc(MAXLEN);;
     memset(buf, 0, MAXLEN);
-    rrd("cmdline",buf);
+    rrd("cmdline",buf+0x100);
     rrd("bootstub",buf+0x1000);
-    int klen=rrd("bzImage",buf+0x1000+8192);
-    int rlen=rrd("initrd.cpio.gz",buf+0x1000+8192+klen);
+    rrd("font",buf+0x1000+8192);
+    int klen=rrd("kernel",buf+0x1000+8192+4096);
+    int rlen=rrd("ramdisk",buf+0x1000+8192+4096+klen);
     *(int *)(buf+0x400)=klen;
     *(int *)(buf+0x404)=rlen;
     buf[0x40c]=0xff;
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
     buf[0x415]=0x12;
     buf[0x416]=0xbd;
     buf[0x417]=0x12;
-    wrt("unsigned.bin",buf,0x1000+8192+klen+rlen);
+    wrt("unsigned.bin",buf,0x1000+8192+4096+klen+rlen);
 
     return 0;
 }
