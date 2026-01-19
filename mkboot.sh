@@ -1,4 +1,4 @@
-#!/biin/sh
+#!/bin/sh
 
 cd $1.unp
 cd initrd && find . | cpio -o -H newc |gzip -c -9 >../initrd.cpio.gz && cd ..
